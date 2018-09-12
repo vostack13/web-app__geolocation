@@ -1,0 +1,14 @@
+header.header {
+    padding: 16px 16px;
+    background-color: gray;
+    display: flex;
+    justify-content: space-between;
+
+    &-user {
+
+    }
+    
+    .hide {
+        display: none; 
+    } 
+}

@@ -57,6 +57,14 @@ export default {
                 searchControlProvider: 'yandex#search'
             });
 
+            const placemarks = marks.map(mark => {
+                console.log(mark)
+                return new ymaps.Placemark(mark.coord, {}, {
+                    present: 'islands#blueHomeCircleIcon',
+                    balloonContentLayout: ymaps.templateLayoutFactory.createClass(balloonCustomTemplate(mark))
+                })
+            })
+
             clusterer = new ymaps.Clusterer({
                 present: 'islands#invertedVioletClusterIcons',
                 clusterDisableClickZoom: true,
@@ -65,13 +73,6 @@ export default {
                 clusterBalloonCycling: false,
             })
 
-            const placemarks = marks.map(mark => {
-                console.log(mark)
-                return new ymaps.Placemark(mark.coord, {}, {
-                    present: 'islands#blueHomeCircleIcon',
-                    balloonContentLayout: ymaps.templateLayoutFactory.createClass(balloonCustomTemplate(mark))
-                })
-            })
             
             clusterer.add(placemarks)
             myMap.geoObjects.add(clusterer);

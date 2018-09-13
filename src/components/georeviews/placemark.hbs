@@ -1,0 +1,17 @@
+<div class="balloon">
+    <header> {{ address }} </header>
+    <main>
+        <ul>
+            {{#each users}}
+                <b>{{ name }}</b>
+                <p>{{ comments }}</p>
+            {{/each}}
+        </ul>
+
+        <h3> Ваш отзыв </h3>
+        <input id="userName" placeholder="Ваше имя" type="text"><br>
+        <input id="userPlace" placeholder="Укажите место" type="text"><br>
+        <textarea name="" id="userComment" placeholder="Поделитесь впечатлениями" rows="5"></textarea><br>
+        <button id="commentButtonAdd">Добавить</button>
+    </main>
+</div>

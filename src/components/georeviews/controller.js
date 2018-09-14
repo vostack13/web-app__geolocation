@@ -6,8 +6,19 @@ const resultNode = document.getElementById('main')
 export default {
     resultNode,
 
-    render() {
-        Model.loadMap(resultNode, View.renderPlacemark)
+    async render() {
+        try {
+            const map = await Model.loadMap(resultNode)
+            View.renderMarks(map, Model.marks)
+            // console.log(map)
+
+        } catch (error) {
+            console.error('Ошибка в render() ~controller.js: ', error);
+        }
+    },
+
+    addComments(){
+        console.log(View.getBalloonInputs())
     }
 
 }

@@ -5,10 +5,14 @@ const marks = [
         users: [
             {
                 name: 'Стасик',
+                date: '',
+                place: '',
                 comments: 'Это очень крутое место на карте'
             },
             {
                 name: 'Максим',
+                date: '',
+                place: '',
                 comments: 'Уютненьео туу'
             },
         ]
@@ -19,10 +23,14 @@ const marks = [
         users: [
             {
                 name: 'Стасик',
+                date: '',
+                place: '',
                 comments: 'Это очень крутое место на карте'
             },
             {
                 name: 'Максим',
+                date: '',
+                place: '',
                 comments: 'Уютненьео туу'
             },
         ]
@@ -33,62 +41,66 @@ const marks = [
         users: [
             {
                 name: 'Стасик',
+                date: '',
+                place: '',
                 comments: 'Это очень крутое место на карте'
             },
             {
                 name: 'Максим',
+                date: '',
+                place: '',
                 comments: 'Уютненьео туу'
             },
         ]
     },
 ]
 
+function addMark(marks) {
+    let result = marks
+    
+
+
+    return result
+}
+
+// myMap.events.add('click', function (e) {
+    
+//     ymaps.geocode(e.get('coords'))
+//         .then (result => {
+//             // let firstObj = result.geoObjects.get(0)
+//             // console.log(result)
+//             // console.log(firstObj.geometry.getCoordinates())
+//             // console.log(firstObj.getAddressLine())
+
+//             const placemark = new ymaps.Placemark(e.get('coords'), {
+//                     baloonInfo: []
+//                 }, {
+//                     present: 'islands#blueHomeCircleIcon',
+//                     balloonContentLayout: ymaps.templateLayoutFactory.createClass(
+//                         placemarkBalloonTemplate()),
+//                 })
+
+//             clusterer.add(placemark)
+//     }).catch( (e) => console.error(e))
+// });
 
 
 export default {
-    async loadMap(nodeTarger, balloonCustomTemplate) {
-        let myMap
-        let clusterer
-        await ymaps.ready(() => {
-            myMap = new ymaps.Map(nodeTarger, {
-                center: [55.76, 37.64],  // Москва
-                zoom: 13
-            }, {
-                searchControlProvider: 'yandex#search'
-            });
+    marks,
 
-            const placemarks = marks.map(mark => {
-                console.log(mark)
-                return new ymaps.Placemark(mark.coord, {}, {
-                    present: 'islands#blueHomeCircleIcon',
-                    balloonContentLayout: ymaps.templateLayoutFactory.createClass(balloonCustomTemplate(mark))
-                })
+    // Функция возвращает объект загруженной карты
+    loadMap(nodeTarger) {
+        return new Promise((resolve) => {
+            ymaps.ready(() => {
+                const map = new ymaps.Map(nodeTarger, {
+                    center: [55.76, 37.64],  // Москва
+                    zoom:12
+                }, {
+                    searchControlProvider: 'yandex#search'
+                });
+                resolve(map)
             })
-
-            clusterer = new ymaps.Clusterer({
-                present: 'islands#invertedVioletClusterIcons',
-                clusterDisableClickZoom: true,
-                openBalloonOnClick: true,
-                clusterBalloonContentLayout: 'cluster#balloonCarousel',
-                clusterBalloonCycling: false,
-            })
-
-            
-            clusterer.add(placemarks)
-            myMap.geoObjects.add(clusterer);
-
-
-            // myMap.events.add('click', function (e) {
-    
-            //     ymaps.geocode(e.get('coords'))
-            //         .then (result => {
-            //             let firstObj = result.geoObjects.get(0)
-            //             console.log(result)
-            //             console.log(firstObj.geometry.getCoordinates())
-            //             console.log(firstObj.getAddressLine())
-            //     }).catch( (e) => console.error(e))
-            // });
         })
+    },
 
-    }
 }

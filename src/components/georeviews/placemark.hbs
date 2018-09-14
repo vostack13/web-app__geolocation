@@ -1,10 +1,12 @@
 <div class="balloon">
     <header> {{ address }} </header>
     <main>
-        <ul>
+        <ul id="commentsList">
             {{#each users}}
-                <b>{{ name }}</b>
-                <p>{{ comments }}</p>
+                <li>
+                    <b>{{ name }}</b>
+                    <p>{{ comments }}</p>
+                </li>
             {{/each}}
         </ul>
 

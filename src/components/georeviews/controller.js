@@ -3,6 +3,12 @@ import Model from './model.js'
 import View from './view.js'
 const resultNode = document.getElementById('main')
 
+View.onEventEmitter('addComment', addComments)
+
+function addComments(arg){
+    console.log('Из контроллера: ' + arg)
+}
+
 export default {
     resultNode,
 
@@ -10,15 +16,10 @@ export default {
         try {
             const map = await Model.loadMap(resultNode)
             View.renderMarks(map, Model.marks)
-            // console.log(map)
 
         } catch (error) {
             console.error('Ошибка в render() ~controller.js: ', error);
         }
     },
-
-    addComments(){
-        console.log(View.getBalloonInputs())
-    }
 
 }

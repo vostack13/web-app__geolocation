@@ -7,7 +7,7 @@ import style from './style.scss'
 let events = {}
 
 // Функция для вызова пользовательского события
-function emitEventEmitter(type, arg) {
+function emitEventEmitter(type, ...arg) {
     if(events[type]) {
         events[type].forEach(callback => callback(arg));
     }
@@ -22,80 +22,19 @@ function onEventEmitter(type, callback) {
 export default {
     onEventEmitter,
 
-    renderMarks(objMap = {}, propertiesMarks = []) {
-        // Создание макета содержимого балуна.
-        // const balloonLayoutTemp = ymaps.templateLayoutFactory.createClass( 
-            // '',
-            
-        //     {
-        //         build: function () {
-        //             balloonLayoutTemp.superclass.build.call(this);
-
-        //             const userName = document.getElementById('userName')
-        //             const commentButtonAdd = document.getElementById('commentButtonAdd')
-        //             const balloon = document.querySelector('.balloon')
-
-        //             commentButtonAdd.addEventListener('click', this.onCounterClick)
-        //         },
-
-        //         clear: function () {
-        //             commentButtonAdd.removeEventListener('click', this.onCounterClick)
-        //             balloonLayoutTemp.superclass.clear.call(this);
-        //         },
-
-        //         onSublayoutSizeChange: function () {
-        //             balloonLayoutTemp.superclass.onSublayoutSizeChange.apply(this, arguments);
-
-        //             if(!this._isElement(this.balloon)) {
-        //                 return;
-        //             }
-
-        //             this.applyElementOffset();
-
-        //             this.events.fire('shapechange');
-        //         },
-
-        //         applyElementOffset: function () {
-        //             this.balloon.css({
-        //                 left: -(this.balloon[0].offsetWidth / 2),
-        //                 top: -(this.balloon[0].offsetHeight + this.balloon.find('.arrow')[0].offsetHeight)
-        //             });
-        //         },
-
-        //         getShape: function () {
-        //             if(!this._isElement(this.balloon)) {
-        //                 return balloonLayoutTemp.superclass.getShape.call(this);
-        //             }
-
-        //             var position = this.balloon.position();
-
-        //             return new ymaps.shape.Rectangle(new ymaps.geometry.pixel.Rectangle([
-        //                 [position.left, position.top], [
-        //                     position.left + this.balloon[0].offsetWidth,
-        //                     position.top + this.balloon[0].offsetHeight + this.balloon.find('.arrow')[0].offsetHeight
-        //                 ]
-        //             ]));
-        //         },
-
-        //         onCounterClick: function () {
-        //             // console.log('Внутри шаблона маркера: ' + userName.value)
-        //             emitEventEmitter('addComment', userName.value)
-        //         },
-        //     }
-        // )
-
-        
+    renderMarks(propertiesMarks = []) {
+        // Создаем макет балуна
         const balloonLayoutContent = ymaps.templateLayoutFactory.createClass(
-            '<div class="balloon">' +
+            '<div id="balloon" class="balloon" data-id="{{ properties.baloonInfo.id }}">' +
                 '<header> <h2> {{ properties.baloonInfo.address }} </h2> <a id="close" href="#">&times;</a> </header>' +
                 '<main>' +
                     '<ul id="commentsList">' +
-                        '{% for user in properties.baloonInfo.users %}' +
+                        '{% for place in properties.baloonInfo.places %}' +
                             '<li>' + 
-                                '<h4 class="comment__name">{{ user.name }} </h4>' +
-                                '<span class="comment__place">{{ user.place }} </span>' +
-                                '<span class="comment__date">{{ user.date }}</span>' +
-                                '<p class="comment__text">{{ user.comments }}</p>' +
+                                '<h4 class="comment__name">{{ place.name_user}} </h4>' +
+                                '<span class="comment__place">{{ place.name_place }} </span>' +
+                                '<span class="comment__date">{{ place.date }}</span>' +
+                                '<p class="comment__text">{{ place.comments }}</p>' +
                             '</li>' +
                         '{% endfor %}' +
                     '</ul>' +
@@ -111,66 +50,45 @@ export default {
                 build: function () {
                     this.constructor.superclass.build.call(this);
 
-                    const userName = document.getElementById('userName')
                     const commentButtonAdd = document.getElementById('commentButtonAdd')
                     const closeButton = document.getElementById('close')
-                    const balloon = document.querySelector('.balloon')
+                    const userName = document.getElementById('userName')
+                    const userPlace = document.getElementById('userPlace')
+                    const userComment = document.getElementById('userComment')
+                    const balloon = document.getElementById('balloon')
 
-                    commentButtonAdd.addEventListener('click', this.onCounterClick)
+
+                    commentButtonAdd.addEventListener('click', this.getInputs)
                     closeButton.addEventListener('click', this.onCloseClick.bind(this))
                 },
 
                 clear: function () {
-                    commentButtonAdd.removeEventListener('click', this.onCounterClick)
+                    commentButtonAdd.removeEventListener('click', this.getInputs)
                     this.constructor.superclass.clear.call(this);
                 },
 
-                onCounterClick: function () {
-                    emitEventEmitter('addComment', userName.value)
+                getInputs: function () {
+                    const id = balloon.getAttribute('data-id')
+                    let inputsValues = {
+                        name_user: userName.value, 
+                        name_place: userPlace.value, 
+                        comments: userComment.value
+                    }
+                    
+                    userName.value = ''
+                    userPlace.value = ''
+                    userComment.value = ''
+
+                    emitEventEmitter('addComment', id, inputsValues)
                 },
 
                 onCloseClick: function (e) {
                     e.preventDefault();
 
                     this.events.fire('userclose');
-                },
-
-                // onSublayoutSizeChange: function () {
-                //     balloonLayoutTemp.superclass.onSublayoutSizeChange.apply(this, arguments);
-
-                //     if(!this._isElement(this.balloon)) {
-                //         return;
-                //     }
-
-                //     this.applyElementOffset();
-
-                //     this.events.fire('shapechange');
-                // },
-
-                // applyElementOffset: function () {
-                //     this.balloon.css({
-                //         left: -(this.balloon[0].offsetWidth / 2),
-                //         top: -(this.balloon[0].offsetHeight + this.balloon.find('.arrow')[0].offsetHeight)
-                //     });
-                // },
-
-                // getShape: function () {
-                //     if(!this._isElement(this.balloon)) {
-                //         return balloonLayoutTemp.superclass.getShape.call(this);
-                //     }
-
-                //     var position = this.balloon.position();
-
-                //     return new ymaps.shape.Rectangle(new ymaps.geometry.pixel.Rectangle([
-                //         [position.left, position.top], [
-                //             position.left + this.balloon[0].offsetWidth,
-                //             position.top + this.balloon[0].offsetHeight + this.balloon.find('.arrow')[0].offsetHeight
-                //         ]
-                //     ]));
-                // },
+                }
             }
         )
-
 
         const placemarks = propertiesMarks.map(mark => {
             return new ymaps.Placemark(mark.coord, {
@@ -200,7 +118,9 @@ export default {
         })
 
         clusterer.add(placemarks)
-        objMap.geoObjects.add(clusterer)
+        // console.log(clusterer)
+        // objMap.geoObjects.add(clusterer)
+        return clusterer
     }
 
 }

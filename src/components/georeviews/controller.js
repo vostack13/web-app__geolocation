@@ -6,10 +6,6 @@ const resultNode = document.getElementById('main')
 View.onEventEmitter('addComment', addComments)
 
 function addComments(arg){
-    let [id, params] = arg
-    Model.addCommentModel(id, params)
-    const clusterer = View.renderMarks(Model.marks)
-    Model.addClusterer(clusterer)
     
 }
 
@@ -18,10 +14,9 @@ export default {
 
     async render() {
         try {
-            await Model.loadMap(resultNode)
-            const clusterer = View.renderMarks(Model.marks)
-            Model.addClusterer(clusterer)
-
+            let map = await View.loadMap(resultNode, [55.76, 37.64])
+            // const clusterer = View.renderMarks(Model.marks)
+            // Model.addClusterer(clusterer)
         } catch (error) {
             console.error('Ошибка в render() ~controller.js: ', error);
         }

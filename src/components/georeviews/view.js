@@ -2,9 +2,7 @@ import georeviewsTemplate from './georeviews.hbs'
 import palcemarkTemplate from './placemark.hbs'
 import style from './style.scss'
 
-
-// Объект событий компонента
-let events = {}
+let events = {} // Объект событий компонента
 
 // Функция для вызова пользовательского события
 function emitEventEmitter(type, ...arg) {
@@ -21,6 +19,28 @@ function onEventEmitter(type, callback) {
 
 export default {
     onEventEmitter,
+
+    // Функция возвращает объект загруженной карты
+    loadMap(nodeTarger, coordCenter) {
+        return new Promise((resolve) => {
+            ymaps.ready(() => {
+                const objMap = new ymaps.Map(nodeTarger, {
+                    center: coordCenter,
+                    zoom:12
+                }, {
+                    searchControlProvider: 'yandex#search'
+                });
+                // console.log(objMap)
+                resolve(objMap)
+            })
+        })
+    },
+
+
+
+
+
+    ///////////////////////////////////////////////////////////////////
 
     renderMarks(propertiesMarks = []) {
         // Создаем макет балуна

@@ -1,63 +1,3 @@
-let marks_old = [
-    {
-        id: 0,
-        coord: [55.76404, 37.602247],
-        address: 'Москва, Сытинский переулок',
-        places: [
-            {
-                name_place: 'Шоколадница',
-                name_user: 'Стасик',
-                date: '12.09.2018',
-                comments: 'Это очень крутое место на карте'
-            },
-            {
-                name_place: 'Шоколадница',
-                name_user: 'Стасик',
-                date: '12.09.2018',
-                comments: 'Это очень крутое место на карте'
-            },
-        ]
-    },
-    {
-        id: 1,
-        coord: [55.756016, 37.637084],
-        address: 'Москва, Петроверигский переулок, 6-8-10с1',
-        places: [
-            {
-                name_place: 'Шоколадница',
-                name_user: 'Стасик',
-                date: '12.09.2018',
-                comments: 'Это очень крутое место на карте'
-            },
-            {
-                name_place: 'Шоколадница',
-                name_user: 'Стасик',
-                date: '12.09.2018',
-                comments: 'Это очень крутое место на карте'
-            },
-        ]
-    },
-    {
-        id: 2,
-        coord: [55.74333, 37.601439],
-        address: 'Москва, улица Остоженка, 5',
-        places: [
-            {
-                name_place: 'Шоколадница',
-                name_user: 'Стасик',
-                date: '12.09.2018',
-                comments: 'Это очень крутое место на карте'
-            },
-            {
-                name_place: 'Шоколадница',
-                name_user: 'Стасик',
-                date: '12.09.2018',
-                comments: 'Это очень крутое место на карте'
-            },
-        ]
-    },
-]
-
 let placemarks = [
     {
         place: 'Шоколадница',
@@ -85,6 +25,8 @@ let placemarks = [
     }
 ]
 
+let Map
+
 // myMap.events.add('click', function (e) {
     
 //     ymaps.geocode(e.get('coords'))
@@ -109,12 +51,10 @@ let placemarks = [
 
 export default {
     placemarks,
+    Map,
     
-    getAllPlacemarks(){
-        let result = []
-        
-        
-        return result
+    addModelPlacemark(params = {}){
+        placemarks.push(params)
     }
     // addClusterer(clusterer){
     //     // console.log(clusterer)

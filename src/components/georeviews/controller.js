@@ -8,8 +8,8 @@ View.onEventEmitter('addComment', addComments)
 
 function addComments(arg){
     Model.addModelPlacemark(arg)
-    // View.addToMap(Model.Map, Model.addModelPlacemark(arg))
-    View.addToMap(Model.Map, Model.placemarks)
+    View.addToMap(Model.Map, arg)
+    
 }
 
 export default {
